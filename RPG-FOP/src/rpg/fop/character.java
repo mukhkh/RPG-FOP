@@ -35,3 +35,9 @@ public class character {
            return 1;
    }
 }
+//public object[] goblin(){
+//object[] goblin = {{MON_NAME},
+//                   {HP,ATK},
+//                   {EXP OBTAINED,MONEY OBTAINED}}
+//return goblin;
+//}
