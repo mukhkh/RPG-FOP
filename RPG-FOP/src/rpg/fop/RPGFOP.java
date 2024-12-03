@@ -31,24 +31,23 @@ public class RPGFOP {
                 System.out.println("2. inventory");
                 System.out.println("3. give up"); //never gonna give you up
                 int choice = scanner.nextInt();
-                if(choice >=1 && choice<=3){
-                    switch(choice){
-                        case 1: //do some fuction
-                            int move=action.move();
-                            break;
-                        case 2: //do some function
-                            action.inventory();
-                            break;
-                        case 3: //do some function
-                            break;
+                while(choice !=1){
+                    if(choice >=1 && choice<=3){
+                        switch(choice){
+                            case 1 -> {
+                                int move=action.move();
+                            }
+                            case 2 -> action.inventory();
+                            default -> System.out.print("");
+                        }        
+                    
+                    }else{
+                        System.out.println("Excuse me player,\nI dont quite understand your choice there");
                     }
                 }
-                else{
-                    System.out.println("Excuse me player,\nI dont quite understand your choice there");
-                    continue;
-                }
             }
-            
         }
+            
     }
 }
+
