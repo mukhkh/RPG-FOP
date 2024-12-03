@@ -28,14 +28,16 @@ public class RPGFOP {
             while(true){
                 System.out.println("Choose your move :");
                 System.out.println("1. move");
-                System.out.println("2. item");
+                System.out.println("2. inventory");
                 System.out.println("3. give up"); //never gonna give you up
                 int choice = scanner.nextInt();
                 if(choice >=1 && choice<=3){
                     switch(choice){
                         case 1: //do some fuction
+                            int move=action.move();
                             break;
                         case 2: //do some function
+                            action.inventory();
                             break;
                         case 3: //do some function
                             break;

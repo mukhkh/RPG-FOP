@@ -8,7 +8,10 @@ package rpg.fop;
  *
  * @author USER
  */
+import java.util.Scanner;
 public class action {
+    Scanner scanner = new Scanner(System.in);
+    
     public int[] attack(int a[], int b[]){
         while(true){
             a[0]=a[0]-b[1];
@@ -27,6 +30,43 @@ public class action {
 
     public void flee(){
         System.out.println("Instead of fighting, you choose to abandon the battlefield");
+    }
+    
+    public int move(){
+        
+        System.out.println("Choose your direction :");
+        System.out.println("1. North");
+        System.out.println("2. East");
+        System.out.println("3. South");
+        System.out.println("4. West");
+        int a = scanner.nextInt();
+        boolean move=true;
+        while(move){
+            switch(a){
+                case 1 -> {
+                    System.out.println("You choose to move in the north direction.");
+                    move=false;
+                }
+                case 2 -> {
+                    System.out.println("You choose to move in the east direction.");
+                    move=false;
+                }
+                case 3 -> {
+                    System.out.println("You choose to move in the south direction.");
+                    move=false;
+                }
+                case 4 -> {
+                    System.out.println("You choose to move in the west direction.");
+                    move=false;
+                }
+                default -> System.out.println("Please choose your direction carefully.");
+            }
+        }
+        return a;
+    }
+    
+    public void inventory(){
+        
     }
 }
 
