@@ -19,35 +19,96 @@ public class RPGFOP {
         Scanner scanner = new Scanner(System.in);
         action action = new action();
         battle battle = new battle();
+        story story = new story();
         character character = new character();
         //player input name        
         String player = character.name();
-
-        while(true){
-        int map = random.nextInt(00001,99999);
+        
+        //print story
+        story.introduction();
+        
+        int floor=1;
+        boolean printstory = true;
+        while(floor<=3){
+            
+            //print floor 1 story
+            if(printstory && floor==1){
+                story.floor1();
+                printstory=false;
+            }
+            //print floor 2 story
+            if(printstory && floor==2){
+                story.floor2();
+                printstory=false;
+            }
+            //print floor 3 story
+            if(printstory && floor==3){
+                story.floor3();
+                printstory=false;
+            }
+        
+            int map = random.nextInt(00001,99999);
             while(true){
-                System.out.println("Choose your move :");
+                System.out.println("***********************************************");
+                System.out.println("Choose your move adventurer :");
                 System.out.println("1. move");
                 System.out.println("2. inventory");
                 System.out.println("3. give up"); //never gonna give you up
+                System.out.println("************************************************");
+
                 int choice = scanner.nextInt();
+                int move=0;
+                
                 while(choice !=1){
                     if(choice >=1 && choice<=3){
                         switch(choice){
                             case 1 -> {
-                                int move=action.move();
+                                move=action.move();
                             }
                             case 2 -> action.inventory();
                             default -> System.out.print("");
                         }        
-                    
+                        switch(move){
+                            //north
+                            case 1 ->{
+                                if(map%2 == 0){ //even
+                                
+                                }else{ //odd
+                                
+                                }
+                            }
+                            //east
+                            case 2 ->{
+                                if(map%2 == 0){ //even
+                                
+                                }else{ //odd
+                                
+                                }
+                            }
+                            //south
+                            case 3 ->{
+                                if(map%2 == 0){ //even
+                                
+                                }else{ //odd
+                                
+                                }
+                            }
+                            //west
+                            case 4 ->{
+                                if(map%2 == 0){ //even
+                                
+                                }else{ //odd
+                                
+                                }
+                            }
+                        }
                     }else{
-                        System.out.println("Excuse me player,\nI dont quite understand your choice there");
+                        System.out.println("Excuse me player,\n"
+                                + "I dont quite understand your choice there");
                     }
                 }
             }
-        }
-            
+        }    
     }
 }
 

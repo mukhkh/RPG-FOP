@@ -12,20 +12,10 @@ import java.util.Scanner;
 public class action {
     Scanner scanner = new Scanner(System.in);
     
-    public int[] attack(int a[], int b[]){
-        while(true){
-            a[0]=a[0]-b[1];
-            b[0]=b[0]-a[1];
-            if(b[0]<=0){
-                System.out.println("You beat the monster!");
-                break;
-            }
-            if(b[0]<=0){
-                    System.out.println("You're dead...");
-                    break;
-            }
-        }
-        return a;
+    public int[] attack(int player[], int monster[]){
+        int[] result = new int[3];
+        //return result[HP yg tertolak, duit yg dapat, 0(mon biasa) 1(boss)]
+        return result;
     }
 
     public void flee(){

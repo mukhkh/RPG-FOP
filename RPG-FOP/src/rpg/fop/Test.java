@@ -12,4 +12,6 @@ public class Test {
     public void attack(){
         System.out.println("Attack");
     }
+     //nak paste kat sini je
+
 }
