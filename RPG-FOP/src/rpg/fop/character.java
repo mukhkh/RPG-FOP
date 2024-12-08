@@ -34,6 +34,14 @@ public class character {
        else
            return 1;
    }
+   public static void pikachu(){
+       Object[][] pikachu = new Object[4][];
+       pikachu[0][0] = "Pikachu";
+       pikachu[1][0] = 100; //HP
+       pikachu[1][1] = 100; //ATK
+       pikachu[2][0] = 100; //coins
+       pikachu[3][9] = true;         
+   }
 }
 //public object[] goblin(){
 //object[] goblin = {{MON_NAME},

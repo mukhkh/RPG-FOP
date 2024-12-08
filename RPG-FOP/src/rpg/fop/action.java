@@ -8,20 +8,35 @@ package rpg.fop;
  *
  * @author USER
  */
+import java.util.ArrayList;
 import java.util.Scanner;
 public class action {
     Scanner scanner = new Scanner(System.in);
     
-    public int[] attack(int player[], int monster[]){
+    public int[] attack(int player[], int mon[], String monName){
         int[] result = new int[3];
-        //return result[HP yg tertolak, duit yg dapat, 0(mon biasa) 1(boss)]
+        int damage = player[0]; //player atk
+        int mondamage = mon[0]; //mon atk
+        int coin = mon[1];
+        System.out.println("You attack the "+monName+"and inflicted "+damage);
+        if(mon[0] <=0){
+            System.out.println("You beat the monster!");
+            result[0] = mondamage;
+            result[1] = damage;
+            result[2] = coin;
+        }else{
+            System.out.println("The monster inflicted "+mondamage+"to you");
+            result[0] = mondamage;
+            result[1] = damage;
+            result[2] = 0;
+        }
         return result;
     }
 
     public void flee(){
         System.out.println("Instead of fighting, you choose to abandon the battlefield");
     }
-    
+    //move direction function
     public int move(){   
         System.out.println("Choose your direction :");
         System.out.println("1. North");
@@ -42,8 +57,13 @@ public class action {
         return a;
     }
     
-    public void inventory(){
-        
+    //printing inventry function
+    public void printList(ArrayList<String> list) {
+        for (String item : list) {
+            System.out.println(item);
+        }
     }
+    
 }
+
 

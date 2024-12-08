@@ -19,7 +19,8 @@ public class battle {
         int option=scanner.nextInt();
         if(option == 1){
         action action = new action();
-        action.attack(a, b);
+        int[] result = new int[3];
+        result = action.attack(a, b,d);
         }
         if(option == 2){
 //        action.flee();

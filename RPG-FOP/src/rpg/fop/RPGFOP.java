@@ -10,6 +10,7 @@ package rpg.fop;
  */
 import java.util.Scanner;
 import java.util.Random;
+import java.util.ArrayList;
 public class RPGFOP {
     /**
      * @param args the command line arguments
@@ -46,9 +47,12 @@ public class RPGFOP {
                 story.floor3();
                 printstory=false;
             }
-        
+            
+            ArrayList<String> inventory = new ArrayList<>();
             int map = random.nextInt(00001,99999);
             while(true){
+                boolean raise = false;
+                do{
                 System.out.println("***********************************************");
                 System.out.println("Choose your move adventurer :");
                 System.out.println("1. move");
@@ -58,16 +62,19 @@ public class RPGFOP {
 
                 int choice = scanner.nextInt();
                 int move=0;
-                
-                while(choice !=1){
                     if(choice >=1 && choice<=3){
                         switch(choice){
                             case 1 -> {
                                 move=action.move();
                             }
-                            case 2 -> action.inventory();
-                            default -> System.out.print("");
-                        }        
+                            case 2 -> {
+                                action.printList(inventory);
+                            }
+                            case 3 ->{
+                                System.out.print("hmm");
+                            }
+                        }
+                        if(choice == 1){
                         switch(move){
                             //north
                             case 1 ->{
@@ -102,11 +109,28 @@ public class RPGFOP {
                                 }
                             }
                         }
+                        }
+                        //choosing inv
+                        if(choice == 2){
+                            int inv;
+                            do{
+                            System.out.println("What do you want to do adventurer?");
+                            System.out.println("1. Use item");
+                            System.out.println("2. Continue the adventure");
+                            inv = scanner.nextInt();
+                            
+                            if(inv == 1){
+                            }else if(inv == 2){
+                            }else{
+                                System.out.println("please choose carefully.");
+                            }
+                            }while(inv != 2);    
+                        }
                     }else{
                         System.out.println("Excuse me player,\n"
                                 + "I dont quite understand your choice there");
                     }
-                }
+                }while(raise);
             }
         }    
     }
