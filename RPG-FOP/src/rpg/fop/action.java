@@ -13,23 +13,24 @@ import java.util.Scanner;
 public class action {
     Scanner scanner = new Scanner(System.in);
     
-    public int[] attack(int player[], int mon[], String monName){
+    public int[] attack(Object[][] player, Object[][] mon){
         int[] result = new int[3];
-        int damage = player[0]; //player atk
-        int mondamage = mon[0]; //mon atk
-        int coin = mon[1];
-        System.out.println("You attack the "+monName+"and inflicted "+damage);
-        if(mon[0] <=0){
+        
+        System.out.println("You attack the "+mon[0][0]+" and inflicted "+player[1][1]);
+        int monHP = (Integer)mon[1][0];
+        monHP -= (Integer)player[1][1];
+        if(monHP <=0){
             System.out.println("You beat the monster!");
-            result[0] = mondamage;
-            result[1] = damage;
-            result[2] = coin;
+            result[0] = (Integer)mon[1][1];
+            result[1] = (Integer)player[1][1];
+            result[2] = 1; //win
         }else{
-            System.out.println("The monster inflicted "+mondamage+"to you");
-            result[0] = mondamage;
-            result[1] = damage;
-            result[2] = 0;
+            System.out.println("The monster inflicted "+mon[1][1]+" damage to you");
+            result[0] = (Integer)mon[1][1];
+            result[1] = (Integer)player[1][1];
+            result[2] = 0; //not yet win
         }
+        // result = {monATK ,playerATK, win/lose}
         return result;
     }
 
@@ -44,7 +45,7 @@ public class action {
         System.out.println("3. South");
         System.out.println("4. West");
         int a = scanner.nextInt();
-
+        boolean loop = true;
         do{
             switch(a){
                 case 1 -> System.out.println("You choose to move in the north direction.");
@@ -53,7 +54,9 @@ public class action {
                 case 4 -> System.out.println("You choose to move in the west direction.");
                 default -> System.out.println("Please choose your direction carefully.");
             }
-        }while(a!=1 || a!=2 || a!=3 || a!=4);
+            if(a>0 && a<5)
+                loop = false;
+        }while(loop);
         return a;
     }
     

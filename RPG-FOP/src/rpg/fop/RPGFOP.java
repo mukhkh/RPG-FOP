@@ -23,7 +23,15 @@ public class RPGFOP {
         story story = new story();
         character character = new character();
         //player input name        
-        String player = character.name();
+        String username = character.name();
+        Object[][] stats = new Object[3][];
+        stats[0] = new String[1];
+        stats[1] = new Object[3];
+        stats[2] = new Object[10];
+        stats[0][0] = username;
+        stats[1][0] = 100; //HP
+        stats[1][1] = 100; //ATK
+        stats[2][0] = 100; //coins
         
         //print story
         story.introduction();
@@ -49,7 +57,8 @@ public class RPGFOP {
             }
             
             ArrayList<String> inventory = new ArrayList<>();
-            int map = random.nextInt(00001,99999);
+            //int map = random.nextInt(00001,99999);
+            int map = 2;
             while(true){
                 boolean raise = false;
                 do{
@@ -62,6 +71,8 @@ public class RPGFOP {
 
                 int choice = scanner.nextInt();
                 int move=0;
+                //result = {HPLOST, COINS OBTAINED}
+                int[] result = new int[3];
                     if(choice >=1 && choice<=3){
                         switch(choice){
                             case 1 -> {
@@ -79,7 +90,8 @@ public class RPGFOP {
                             //north
                             case 1 ->{
                                 if(map%2 == 0){ //even
-                                
+                                    Object[][] mon = character.pikachu();
+                                    result = battle.fight(stats, mon);
                                 }else{ //odd
                                 
                                 }
