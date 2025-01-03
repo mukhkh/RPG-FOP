@@ -21,6 +21,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import static rpgfop.Inv.displayInventory;
 import static rpgfop.Inv.findItem;
+import static rpgfop.Inv.useItem;
+import static rpgfop.Merchant.Items;
 
 /**
  *
@@ -41,7 +43,7 @@ public class game {
     Font normalFont = new Font("Arabic Typesetting", Font.PLAIN, 25);
     Font storyFont = new Font("Monospaced", Font.PLAIN, 15);
     JButton startButton, nextButtonStory;
-    JButton choice1, choice2, choice3, choice4, inventory;
+    JButton choice1, choice2, choice3, choice4, choice5;
     
     JPanel inventoryitem;
     JButton item1, item2, item3, item4, item5, item6, item7, item8, item9, item10;
@@ -62,6 +64,8 @@ public class game {
     toWest WmoveHandler = new toWest();
     toSouth SmoveHandler = new toSouth();
     toInventory tiHandler = new toInventory();
+    
+    useitem useitemHandler = new useitem();
     
     String PlayerName;
     public static void main(String[] args) {
@@ -268,20 +272,20 @@ public class game {
         choice4.setFocusPainted(false);
         choice4.addActionListener(SmoveHandler);
         
-        inventory = new JButton("INVENTORY");
-        inventory.setBackground(Color.white);
-        inventory.setForeground(Color.black);
-        inventory.setFocusPainted(false);
-        inventory.addActionListener(tiHandler);
+        choice5 = new JButton("INVENTORY");
+        choice5.setBackground(Color.white);
+        choice5.setForeground(Color.black);
+        choice5.setFocusPainted(false);
+        choice5.addActionListener(tiHandler);
         
         choicePanel.add(choice1);
         choicePanel.add(choice2);
         choicePanel.add(choice3);
         choicePanel.add(choice4);
-        choicePanel.add(inventory);
+        choicePanel.add(choice5);
         
         playerstats = new JPanel();
-        playerstats.setBounds(50, 15, 450, 50);
+        playerstats.setBounds(50, 15, 500, 50);
         playerstats.setBackground(Color.WHITE);
         playerstats.setForeground(Color.WHITE);
         playerstats.setLayout(new GridLayout(1, 8));
@@ -391,6 +395,17 @@ public class game {
         @Override
         public void actionPerformed(ActionEvent event){
             displayInventory();
+            choice1.setText("USE ITEM");
+            choice2.setText("");
+            choice3.setText("");
+            choice4.setText("");
+            choice5.setText("");
+            choice1.addActionListener(useitemHandler);
+            choice1.removeActionListener(NmoveHandler);
+            choice2.removeActionListener(EmoveHandler);
+            choice3.removeActionListener(WmoveHandler);
+            choice4.removeActionListener(SmoveHandler);
+            choice5.removeActionListener(tiHandler);
         }
     }
     
@@ -404,6 +419,7 @@ public class game {
         @Override
         public void actionPerformed(ActionEvent event){
             findItem();
+            
         }
     }
     public class toWest implements ActionListener{
@@ -414,7 +430,18 @@ public class game {
     public class toSouth implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
-
+            Items();
+        }
+    }
+    public class useitem implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            useItem();
+                choice1.setText("1");
+                choice2.setText("2");
+                choice3.setText("3");
+                choice4.setText("4");
+                choice5.setText("5");
         }
     }
 }
