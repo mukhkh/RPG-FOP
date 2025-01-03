@@ -437,6 +437,7 @@ public class game {
         @Override
         public void actionPerformed(ActionEvent event){
             useItem();
+            //gay
                 choice1.setText("1");
                 choice2.setText("2");
                 choice3.setText("3");
