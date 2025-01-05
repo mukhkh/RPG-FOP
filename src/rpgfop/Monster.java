@@ -9,8 +9,11 @@ package rpgfop;
  * @author USER
  */
 import java.util.Random;
+import static rpgfop.game.mainTextArea;
 import static rpgfop.game.playeratk;
+import static rpgfop.game.playercoin;
 import static rpgfop.game.playerhp;
+
 public class Monster {
     //floor 1
     public static class goblin{
@@ -30,6 +33,7 @@ public class Monster {
             switch(dodge){
                 case 0:
                     hp=hp-playeratk;
+                    mainTextArea.setText("The goblin lost - HP");
                     break;
                 case 1:
                     hp=hp-playeratk;
@@ -46,7 +50,6 @@ public class Monster {
             return atk;
         }
     }
-    
     public class slime{
         private int hp;
         private int atk;
@@ -82,6 +85,7 @@ public class Monster {
         Random chance=new Random();
         int counter=chance.nextInt(4);
         public void attack(){
+            
             if(counter==0){
                 hp=hp-playeratk;
                 playerhp-=(int)(playeratk/4);//hp player also decrease
@@ -241,5 +245,10 @@ public class Monster {
         public int getAtk(){
             return this.atk;
         }
+    }
+    
+    public void encounter(){
+        int floor =1;
+        
     }
 }
