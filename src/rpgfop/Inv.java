@@ -9,11 +9,11 @@ package rpgfop;
  * @author USER
  */
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Scanner;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
+//import java.io.PrintWriter;
+//import java.util.Arrays;
+//import java.util.Scanner;
 import java.util.Random;
 import static rpgfop.game.mainTextArea;
 public class Inv {
@@ -24,7 +24,8 @@ public class Inv {
     static String[] types = new String[5];
     static int itemCount = 0;
     static Random random = new Random();
-
+    static StringBuilder sb;
+    
     // Method to find and add a new item to the inventory
     //will be displayed when player choose to move east only(as of now)
     public static void findItem() {
@@ -55,7 +56,7 @@ public class Inv {
     }
 
     // Method to use an item from the inventory
-    public static void useItem(Scanner scanner) {
+    public static void useItem() {
         if (itemCount == 0) {
             mainTextArea.setText("Your inventory is empty!");
             System.out.println("Your inventory is empty!");
@@ -63,28 +64,25 @@ public class Inv {
         }
 
         displayInventory();
-        System.out.println("Enter the name of the item you want to use:");
-        scanner.nextLine(); // Clear the input buffer
-        String itemName = scanner.nextLine();
-
+        mainTextArea.setText("Enter the number of the item you want to use:");
         boolean found = false;
-        for (int i = 0; i < itemCount; i++) {
-            if (itemNames[i].equalsIgnoreCase(itemName)) {
-                found = true;
-                System.out.println("You used " + itemNames[i] + ". " + descriptions[i] + 
-                    " (+" + values[i] + " " + types[i] + ")");
-
-                // Shift items left to remove the used item
-                for (int j = i; j < itemCount - 1; j++) {
-                    itemNames[j] = itemNames[j + 1];
-                    descriptions[j] = descriptions[j + 1];
-                    values[j] = values[j + 1];
-                    types[j] = types[j + 1];
-                }
-                itemCount--;
-                break;
-            }
-        }
+//        for (int i = 0; i < itemCount; i++) {
+//            if (itemNames[i].equalsIgnoreCase(itemName)) {
+//                found = true;
+//                System.out.println("You used " + itemNames[i] + ". " + descriptions[i] + 
+//                    " (+" + values[i] + " " + types[i] + ")");
+//
+//                // Shift items left to remove the used item
+//                for (int j = i; j < itemCount - 1; j++) {
+//                    itemNames[j] = itemNames[j + 1];
+//                    descriptions[j] = descriptions[j + 1];
+//                    values[j] = values[j + 1];
+//                    types[j] = types[j + 1];
+//                }
+//                itemCount--;
+//                break;
+//            }
+//        }
 
         if (!found) {
             System.out.println("Item not found!");
@@ -108,7 +106,7 @@ public class Inv {
             System.out.println((i + 1) + ". " + itemNames[i] + ": " + descriptions[i] + 
                 " (Value: +" + values[i] + " " + types[i] + ")");
         }
-        StringBuilder sb = new StringBuilder();
+        sb = new StringBuilder();
         for(String s : item ){
             sb.append(s).append("\n");
         }

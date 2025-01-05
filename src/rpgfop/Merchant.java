@@ -22,6 +22,7 @@ public class Merchant {
     static int[] attributes;
     static int[] prices;
     static String[] items;
+    static String[] item;
     
     public static void Items(){
         
@@ -29,16 +30,24 @@ public class Merchant {
         String[] item_description = {"Restore HP", "Increase Attack", "Boost Magic"};
         attributes = new int[] {getHP(), getAttack(), getMagic()};
         prices = new int[] {getHP_price(), getAttack_price(), getMagic_price()};
+        item = new String[items.length];
         
         System.out.println("Items available : ");
         for(int i = 0; i < items.length; i++){
-            
             //format text
-            mainTextArea.setText(String.format("%d. %-15s : %s by %d (cost: %d coins)\n"
+            item[i] = (
+                    String.format("%d. %-15s : %s by %d (cost: %d coins)"
                     , (i+1), items[i], item_description[i], attributes[i], prices[i]));
-           System.out.printf("%d. %-15s : %s by %d (cost: %d coins)\n"
+            System.out.printf("%d. %-15s : %s by %d (cost: %d coins)\n"
                    , (i+1), items[i], item_description[i], attributes[i], prices[i]);
         }
+        StringBuilder sb = new StringBuilder();
+        for(String s : item ){
+            sb.append(s).append("\n");
+        }
+        
+        mainTextArea.setText("Items available : \n"
+                +sb.toString());
     }
     
     

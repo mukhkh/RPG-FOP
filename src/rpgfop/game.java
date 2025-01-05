@@ -4,7 +4,6 @@
  */
 package rpgfop;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -32,24 +31,25 @@ public class game {
     
     JFrame menu;
     Container con; //function to add button, title etc
-    JPanel titlenamepanel, startbuttonpanel, maintextPanel ,choicePanel;
+    JPanel titlenamepanel, startbuttonpanel, maintextPanel ,choicePanel, difficulty;
     JPanel playerstats;
     JPanel storyPanel, nextStoryButtonPanel;
     JTextArea storyboard;
     static JTextArea mainTextArea;
     JPanel usernameButton ,inputUsername, instruction;
-    JLabel titlename, HPPlayerDisplay, ATKPlayerDisplay, PlayerHP, PlayerATK, COINPlayerDisplay, PlayerCOIN, MANAPlayerDisplay, PlayerMANA;
+    static JLabel titlename, HPPlayerDisplay, ATKPlayerDisplay, PlayerHP, PlayerATK, COINPlayerDisplay, PlayerCOIN, MANAPlayerDisplay, PlayerMANA;
     Font Titlefont = new Font("Algerian ", Font.PLAIN, 45);
     Font normalFont = new Font("Arabic Typesetting", Font.PLAIN, 25);
     Font storyFont = new Font("Monospaced", Font.PLAIN, 15);
     JButton startButton, nextButtonStory;
+    JButton level1,level2,level3;
     JButton choice1, choice2, choice3, choice4, choice5;
     
     JPanel inventoryitem;
     JButton item1, item2, item3, item4, item5, item6, item7, item8, item9, item10;
     JButton backFromInventory;
     
-    
+    chooseDifficultyHandler cdHandler  = new chooseDifficultyHandler(); 
     titleScreenHandler tsHandler = new titleScreenHandler();
     usernameScreenHandler usHandler = new usernameScreenHandler();
     leaderboardHandler ldHandler = new leaderboardHandler();
@@ -68,6 +68,7 @@ public class game {
     useitem useitemHandler = new useitem();
     
     String PlayerName;
+    static int playerhp, playeratk, playercoin;
     public static void main(String[] args) {
          new game();
     }
@@ -102,20 +103,55 @@ public class game {
         startButton.setBackground(Color.WHITE); //button color
         startButton.setForeground(Color.BLACK); //text in button color
         startButton.setFocusPainted(false);
-        startButton.addActionListener(tsHandler); //add action listener to start button
+        startButton.addActionListener(cdHandler); //add action listener to start button
         startbuttonpanel.add(startButton);
         
         con.add(titlenamepanel);
         con.add(startbuttonpanel);
         
     }
+    public void chooseDifficulty(){
+        
+        startbuttonpanel.setVisible(false); //diasble start button panel after click start 
+        
+        titlename.setText("choose your difficulty");
+        titlename.setFont(storyFont);
+        
+        difficulty = new JPanel();
+        difficulty.setBounds(250, 200, 100, 400);
+        difficulty.setBackground(Color.WHITE);
+        
+        level1 = new JButton("level1");
+        level1.setBackground(Color.WHITE); //button color
+        level1.setForeground(Color.BLACK); //text in button color
+        level1.setFocusPainted(false);
+        level1.addActionListener(tsHandler); //add action listener to start button
+        difficulty.add(level1);
+        
+        level2 = new JButton("level2");
+        level2.setBackground(Color.WHITE); //button color
+        level2.setForeground(Color.BLACK); //text in button color
+        level2.setFocusPainted(false);
+        level2.addActionListener(tsHandler); //add action listener to start button
+        difficulty.add(level2);
+        
+        level3 = new JButton("level3");
+        level3.setBackground(Color.WHITE); //button color
+        level3.setForeground(Color.BLACK); //text in button color
+        level3.setFocusPainted(false);
+        level3.addActionListener(tsHandler); //add action listener to start button
+        difficulty.add(level3);
+        
+        con.add(difficulty);
+    }
     
     public void enterUsernameScreen(){
         
+        difficulty.setVisible(false);
         titlenamepanel.setVisible(false); //disable the title panel after click start
         startbuttonpanel.setVisible(false); //diasble start button panel after click start
         
-        //enter and back button
+        //enter and leaderboard button
         usernameButton = new JPanel();
         usernameButton.setBounds(200, 300, 200, 100);
         usernameButton.setBackground(Color.white);
@@ -288,7 +324,7 @@ public class game {
         playerstats.setBounds(50, 15, 500, 50);
         playerstats.setBackground(Color.WHITE);
         playerstats.setForeground(Color.WHITE);
-        playerstats.setLayout(new GridLayout(1, 8));
+        playerstats.setLayout(new GridLayout(1, 6));
         
         HPPlayerDisplay = new JLabel("HP:");
         HPPlayerDisplay.setForeground(Color.black);
@@ -306,18 +342,9 @@ public class game {
         PlayerATK = new JLabel();
         PlayerATK.setForeground(Color.black);
         PlayerATK.setFont(normalFont);
-        playerstats.add(PlayerATK);
+        playerstats.add(PlayerATK);    
         
-        MANAPlayerDisplay = new JLabel("MANA:");
-        MANAPlayerDisplay.setForeground(Color.black);
-        MANAPlayerDisplay.setFont(normalFont);
-        playerstats.add(MANAPlayerDisplay);
-        PlayerMANA = new JLabel();
-        PlayerMANA.setForeground(Color.black);
-        PlayerMANA.setFont(normalFont);
-        playerstats.add(PlayerMANA);
-        
-        COINPlayerDisplay = new JLabel("COIN:");
+        COINPlayerDisplay = new JLabel("GOLD:");
         COINPlayerDisplay.setForeground(Color.black);
         COINPlayerDisplay.setFont(normalFont);
         playerstats.add(COINPlayerDisplay);
@@ -335,18 +362,23 @@ public class game {
         
     }
     
-    public void createPlayer(){
-        int playerhp, playeratk, playermana, playercoin;
+    public static void createPlayer(){
+        
         playerhp = 30;
         playeratk = 5;
-        playermana = 50;
         playercoin = 10;
         
         PlayerHP.setText(""+playerhp);
         PlayerATK.setText(""+playeratk);
-        PlayerMANA.setText(""+playermana);
         PlayerCOIN.setText(""+playercoin);
         
+    }
+    
+    public class chooseDifficultyHandler implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            chooseDifficulty();
+        }
     }
     public class titleScreenHandler implements ActionListener{
         @Override
@@ -413,6 +445,7 @@ public class game {
     public class toNorth implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
+            
         }
     }
     public class toEast implements ActionListener{
