@@ -274,7 +274,7 @@ public class game {
         mainTextArea.setBounds(50, 100, 450, 100);
         mainTextArea.setBackground(Color.gray);
         mainTextArea.setForeground(Color.black);
-        mainTextArea.setFont(normalFont);
+        mainTextArea.setFont(storyFont);
         mainTextArea.setLineWrap(true); //if text too long, it will break line
         maintextPanel.add(mainTextArea);
         
@@ -364,7 +364,7 @@ public class game {
     
     public static void createPlayer(){
         
-        playerhp = 30;
+        playerhp = 50;
         playeratk = 5;
         playercoin = 10;
         
@@ -445,7 +445,7 @@ public class game {
     public class toNorth implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
-            
+            //random 0,1,2
         }
     }
     public class toEast implements ActionListener{
