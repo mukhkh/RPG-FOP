@@ -71,7 +71,7 @@ public class Monster {
             return this.atk;
         }
     }
-    public class tarantula{
+    public static class tarantula{
         private int hp;
         private int atk;
         private char name;
@@ -86,12 +86,19 @@ public class Monster {
         int counter=chance.nextInt(4);
         public void attack(){
             
-            if(counter==0){
-                hp=hp-playeratk;
-                playerhp-=(int)(playeratk/4);//hp player also decrease
-            }
-            else{
-                hp=hp-playeratk;
+            if(hp >0){
+                if(counter==0){
+                    hp=hp-playeratk;
+                    playerhp-=(int)(playeratk/4);//hp player also decrease
+                    mainTextArea.setText("HP="+hp+"ATK="+atk+"/n"
+                    +"The boss lost "+playeratk +" HP\n"
+                    +"The boss reflect back some damage and you lost some HP"); 
+               }
+                else{
+                    hp=hp-playeratk;
+                }
+            }else{
+                mainTextArea.setText("you beat the mosnter!");
             }
         }
         public int getDrop(){
@@ -116,6 +123,7 @@ public class Monster {
         public void attack(){
             hp=hp-playeratk; //received attack
             hp=hp+1; //ability (regenerate 1 hp)
+            playerhp -= atk;
         }
         public int getDrop(){
             return this.drop;
