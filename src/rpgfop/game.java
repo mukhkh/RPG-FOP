@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,8 +21,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import static rpgfop.Inv.displayInventory;
 import static rpgfop.Inv.findItem;
-import static rpgfop.Inv.useItem;
+import static rpgfop.Merchant.Buy_Process;
 import static rpgfop.Merchant.Items;
+import rpgfop.Monster.goblin;
+import rpgfop.Monster.slime;
+import rpgfop.Monster.tarantula;
+import rpgfop.Monster.lizard;
+import rpgfop.Monster.basilisk;
+import rpgfop.Monster.giant;
+import rpgfop.Monster.zombie;
+import rpgfop.Monster.witch;
+import rpgfop.Monster.dragon;
 
 /**
  *
@@ -32,7 +42,7 @@ public class game {
     JFrame menu;
     Container con; //function to add button, title etc
     JPanel titlenamepanel, startbuttonpanel, maintextPanel ,choicePanel, difficulty;
-    JPanel playerstats;
+    JPanel playerstats, monstatpanel;
     JPanel storyPanel, nextStoryButtonPanel;
     JTextArea storyboard;
     static JTextArea mainTextArea;
@@ -43,32 +53,53 @@ public class game {
     Font storyFont = new Font("Monospaced", Font.PLAIN, 15);
     JButton startButton, nextButtonStory;
     JButton level1,level2,level3;
-    JButton choice1, choice2, choice3, choice4, choice5;
+    static JTextField input;
+    static JButton choice1, choice2, choice3, choice4, choice5;
     
     JPanel inventoryitem;
     JButton item1, item2, item3, item4, item5, item6, item7, item8, item9, item10;
     JButton backFromInventory;
     
     chooseDifficultyHandler cdHandler  = new chooseDifficultyHandler(); 
-    titleScreenHandler tsHandler = new titleScreenHandler();
+    titleScreenHandler1 ts1Handler = new titleScreenHandler1();
+    titleScreenHandler2 ts2Handler = new titleScreenHandler2();
+    titleScreenHandler3 ts3Handler = new titleScreenHandler3();
     usernameScreenHandler usHandler = new usernameScreenHandler();
     leaderboardHandler ldHandler = new leaderboardHandler();
     sambungstory ssHandler = new sambungstory();
     sambungstory2 ss2Handler = new sambungstory2();
     sambungstory3 ss3Handler = new sambungstory3();
     createGame cgHandler = new createGame();
+    static back backHandler = new back();
+    static buy buyHandler = new buy();
+    static buy1 buy1Handler = new buy1();
+    static buy2 buy2Handler = new buy2();
+    static fightMon fightMonHandler = new fightMon();
+    fightBoss fbHandler = new fightBoss();
     
     //object for action listener
-    toNorth NmoveHandler = new toNorth();
-    toEast EmoveHandler = new toEast();
-    toWest WmoveHandler = new toWest();
-    toSouth SmoveHandler = new toSouth();
-    toInventory tiHandler = new toInventory();
+    static toNorth NmoveHandler = new toNorth();
+    static toEast EmoveHandler = new toEast();
+    static toWest WmoveHandler = new toWest();
+    static toSouth SmoveHandler = new toSouth();
+    static toInventory tiHandler = new toInventory();
     
-    useitem useitemHandler = new useitem();
+    static goblin goblin;
+    static slime slime;
+    static tarantula tarantula;
+    static lizard lizard;
+    static basilisk basilisk;
+    static giant giant;
+    static zombie zombie;
+    static witch witch;
+    static dragon dragon;
     
-    String PlayerName;
-    static int playerhp, playeratk, playercoin;
+    static int move = 0;
+    static int fightwho;
+    static boolean firstFight;
+    static String PlayerName;
+    static int playerhp, playeratk, playercoin, floor, opt;
+    
     public static void main(String[] args) {
          new game();
     }
@@ -106,6 +137,8 @@ public class game {
         startButton.addActionListener(cdHandler); //add action listener to start button
         startbuttonpanel.add(startButton);
         
+        titlenamepanel.setVisible(true);
+        startbuttonpanel.setVisible(true);
         con.add(titlenamepanel);
         con.add(startbuttonpanel);
         
@@ -125,26 +158,25 @@ public class game {
         level1.setBackground(Color.WHITE); //button color
         level1.setForeground(Color.BLACK); //text in button color
         level1.setFocusPainted(false);
-        level1.addActionListener(tsHandler); //add action listener to start button
+        level1.addActionListener(ts1Handler); //add action listener to start button
         difficulty.add(level1);
         
         level2 = new JButton("level2");
         level2.setBackground(Color.WHITE); //button color
         level2.setForeground(Color.BLACK); //text in button color
         level2.setFocusPainted(false);
-        level2.addActionListener(tsHandler); //add action listener to start button
+        level2.addActionListener(ts2Handler); //add action listener to start button
         difficulty.add(level2);
         
         level3 = new JButton("level3");
         level3.setBackground(Color.WHITE); //button color
         level3.setForeground(Color.BLACK); //text in button color
         level3.setFocusPainted(false);
-        level3.addActionListener(tsHandler); //add action listener to start button
+        level3.addActionListener(ts3Handler); //add action listener to start button
         difficulty.add(level3);
         
         con.add(difficulty);
     }
-    
     public void enterUsernameScreen(){
         
         difficulty.setVisible(false);
@@ -189,7 +221,7 @@ public class game {
         inputUsername.setBackground(Color.white);
         inputUsername.setForeground(Color.black);
         
-        JTextField input = new JTextField(20);
+        input = new JTextField(20);
         JLabel name = new JLabel("Name : ");
         input.setBounds(150, 150, 300, 50);
         input.setBackground(Color.white);
@@ -198,13 +230,12 @@ public class game {
         inputUsername.add(input);
         
         PlayerName = input.getText();
-        
         con.add(instruction);
         con.add(inputUsername);
         con.add(usernameButton);
     }
     public void storyTelling(){
-    
+        PlayerName = input.getText();
         instruction.setVisible(false);
         usernameButton.setVisible(false);
         inputUsername.setVisible(false);
@@ -276,6 +307,7 @@ public class game {
         mainTextArea.setForeground(Color.black);
         mainTextArea.setFont(storyFont);
         mainTextArea.setLineWrap(true); //if text too long, it will break line
+        mainTextArea.setVisible(true);
         maintextPanel.add(mainTextArea);
         
         choicePanel = new JPanel();
@@ -353,6 +385,12 @@ public class game {
         PlayerCOIN.setFont(normalFont);
         playerstats.add(PlayerCOIN);
         
+        monstatpanel = new JPanel();
+        monstatpanel.setBounds(50, 15, 500, 50);
+        monstatpanel.setBackground(Color.WHITE);
+        monstatpanel.setForeground(Color.WHITE);
+        monstatpanel.setLayout(new GridLayout(1, 4));
+        
         createPlayer();
         
         con.add(playerstats);
@@ -361,9 +399,63 @@ public class game {
         
         
     }
-    
-    public static void createPlayer(){
+    public static void continueGameScreen(){
+        choice1.setText("NORTH");
+        for( ActionListener al : choice1.getActionListeners() ) {
+        choice1.removeActionListener( al );
+        }
+        choice1.addActionListener(NmoveHandler);
         
+        for( ActionListener al : choice2.getActionListeners() ) {
+        choice2.removeActionListener( al );
+        }
+        choice2.setText("EAST");
+        choice2.addActionListener(EmoveHandler);
+        
+        for( ActionListener al : choice3.getActionListeners() ) {
+        choice3.removeActionListener( al );
+        }
+        choice3.setText("WEST");
+        choice3.addActionListener(WmoveHandler);
+        
+        for( ActionListener al : choice4.getActionListeners() ) {
+        choice4.removeActionListener( al );
+        }
+        choice4.setText("SOUTH");
+        choice4.addActionListener(SmoveHandler);
+        
+        choice5.setText("INVENTORY");
+        choice5.addActionListener(tiHandler);
+    }
+    
+    public static void gameEnd(){
+        choice1.setText("");
+        for( ActionListener al : choice1.getActionListeners() ) {
+        choice1.removeActionListener( al );
+        }
+        
+        for( ActionListener al : choice2.getActionListeners() ) {
+        choice2.removeActionListener( al );
+        }
+        choice2.setText("");
+        
+        for( ActionListener al : choice3.getActionListeners() ) {
+        choice3.removeActionListener( al );
+        }
+        choice3.setText("");
+        
+        for( ActionListener al : choice4.getActionListeners() ) {
+        choice4.removeActionListener( al );
+        }
+        choice4.setText("");
+        
+        for( ActionListener al : choice5.getActionListeners() ) {
+        choice5.removeActionListener( al );
+        }
+        choice5.setText("");
+    }
+    public static void createPlayer(){
+        System.out.println("Player name: "+PlayerName);
         playerhp = 50;
         playeratk = 5;
         playercoin = 10;
@@ -374,15 +466,46 @@ public class game {
         
     }
     
+    public void fightButton(){
+        choice1.setText("FIGHT");
+        choice1.removeActionListener(NmoveHandler);
+        choice1.addActionListener(fbHandler);
+        choice2.setText("RUN");
+        choice2.removeActionListener(EmoveHandler);
+        choice2.addActionListener(backHandler);
+        choice3.setText("");
+        choice3.removeActionListener(WmoveHandler);
+        choice4.setText("");
+        choice4.removeActionListener(SmoveHandler);
+        choice5.setText("");
+        choice5.removeActionListener(tiHandler);
+        
+    }
+    
     public class chooseDifficultyHandler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
             chooseDifficulty();
         }
     }
-    public class titleScreenHandler implements ActionListener{
+    public class titleScreenHandler1 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
+            floor = 1;
+            enterUsernameScreen();
+        }
+    }
+    public class titleScreenHandler2 implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            floor = 2;
+            enterUsernameScreen();
+        }
+    }
+    public class titleScreenHandler3 implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            floor = 3;
             enterUsernameScreen();
         }
     }
@@ -423,59 +546,222 @@ public class game {
             createGameScreen();
         }
     }
-    public class toInventory implements ActionListener{
+    public static class toInventory implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
             displayInventory();
-            choice1.setText("USE ITEM");
-            choice2.setText("");
-            choice3.setText("");
-            choice4.setText("");
-            choice5.setText("");
-            choice1.addActionListener(useitemHandler);
-            choice1.removeActionListener(NmoveHandler);
-            choice2.removeActionListener(EmoveHandler);
-            choice3.removeActionListener(WmoveHandler);
-            choice4.removeActionListener(SmoveHandler);
-            choice5.removeActionListener(tiHandler);
+        }
+    }
+    // back is for running from monster/boss
+    public static class back implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            mainTextArea.setText("Your return back to nowhere");
+            continueGameScreen();
         }
     }
     
     // button to move
-    public class toNorth implements ActionListener{
+    public static class toNorth implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
-            //random 0,1,2
+            move++;
+            switch(floor){
+                    case 1:
+                        mainTextArea.setText("You found a boss tarantula, fight or flight?");
+                        break;
+                    case 2:
+                        mainTextArea.setText("You found a boss giant, fight or flight?");
+                        break;
+                    case 3:
+                        mainTextArea.setText("You found a boss dragon, fight or flight?");
+                        break;
+                }
+            choice1.setText("FIGHT");
+            choice2.setText("RUN");
+            choice3.setText("");
+            choice4.setText("");
+            choice1.removeActionListener(NmoveHandler);
+            choice2.removeActionListener(EmoveHandler);
+            choice3.removeActionListener(WmoveHandler);
+            choice4.removeActionListener(SmoveHandler);
+            choice1.addActionListener(fightMonHandler);
+            choice2.addActionListener(backHandler);
         }
     }
-    public class toEast implements ActionListener{
+    public static class toEast implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
             findItem();
-            
+            move++;
+            PlayerHP.setText(""+playerhp);
+            PlayerATK.setText(""+playeratk);
+            PlayerCOIN.setText(""+playercoin);
         }
     }
-    public class toWest implements ActionListener{
+    public static class toWest implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
+            move++;
+            firstFight=true;
+            Random random = new Random();
+            fightwho = random.nextInt(2);
+            if(fightwho == 1){
+                switch(floor){
+                    case 1:
+                        mainTextArea.setText("You found a goblin, fight or flight?");
+                        break;
+                    case 2:
+                        mainTextArea.setText("You found a lizard, fight or flight?");
+                        break;
+                    case 3:
+                        mainTextArea.setText("You found a zombie, fight or flight?");
+                        break;
+                }
+            }else{
+                switch(floor){
+                    case 1:
+                        mainTextArea.setText("You found a slime, fight or flight?");
+                        break;
+                    case 2:
+                        mainTextArea.setText("You found a basilisk, fight or flight?");
+                        break;
+                    case 3:
+                        mainTextArea.setText("You found a witch, fight or flight?");
+                        break;
+                }
+            }
+            choice1.setText("FIGHT");
+            choice2.setText("RUN");
+            choice3.setText("");
+            choice4.setText("");
+            choice1.removeActionListener(NmoveHandler);
+            choice2.removeActionListener(EmoveHandler);
+            choice3.removeActionListener(WmoveHandler);
+            choice4.removeActionListener(SmoveHandler);
+            choice1.addActionListener(fightMonHandler);
+            choice2.addActionListener(backHandler);
         }
     }
-    public class toSouth implements ActionListener{
+    public static class toSouth implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
+            move++;
             Items();
-        }
+            choice1.setText("BUY");
+            choice2.setText("RETURN");
+            choice3.setText("");
+            choice4.setText("");
+            choice1.removeActionListener(NmoveHandler);
+            choice2.removeActionListener(EmoveHandler);
+            choice3.removeActionListener(WmoveHandler);
+            choice4.removeActionListener(SmoveHandler);
+            choice1.addActionListener(buyHandler);
+            choice2.addActionListener(backHandler);
+       }
     }
-    public class useitem implements ActionListener{
+    
+    public static class buy implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
-            useItem();
+            choice1.setText("1");
+            choice2.setText("2");
+            choice3.setText("");
+            choice4.setText("");
+            choice1.removeActionListener(buyHandler);
+            choice2.removeActionListener(EmoveHandler);
+            choice1.addActionListener(buy1Handler);
+            choice2.addActionListener(buy2Handler);
+             
+        }
+    }
+    public static class buy1 implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            opt=1;
+            Buy_Process();
+            PlayerHP.setText(""+playerhp);
+            PlayerATK.setText(""+playeratk);
+            PlayerCOIN.setText(""+playercoin);
+            choice1.removeActionListener(buy1Handler);
+            choice2.removeActionListener(buy2Handler);
+            continueGameScreen();
+        }
+    }
+    public static class buy2 implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            opt =2;
+            Buy_Process();
+            PlayerHP.setText(""+playerhp);
+            PlayerATK.setText(""+playeratk);
+            PlayerCOIN.setText(""+playercoin);
+            choice1.removeActionListener(buy1Handler);
+            choice2.removeActionListener(buy2Handler);
+            continueGameScreen();
+        }
+    }
+    public class fightBoss implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            switch(floor){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        }
+    }
+    public static class fightMon implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
             
-                choice1.setText("1");
-                choice2.setText("2");
-                choice3.setText("3");
-                choice4.setText("4");
-                choice5.setText("5");
+            if(fightwho == 1){
+                switch(floor){
+                    case 1:
+                        if(firstFight){
+                            goblin = new goblin(45, 5, 7);
+                        }
+                        goblin.attack();
+                        break;
+                    case 2:
+                        if(firstFight){
+                            lizard = new lizard(55, 6, 9);
+                        }
+                        lizard.attack();
+                        break;
+                    case 3:
+                        if(firstFight){
+                            zombie = new zombie(60, 9, 5);
+                            zombie.attack();
+                        }
+                        break;
+                }
+            }else{
+                switch(floor){
+                    case 1:
+                        if(firstFight){
+                            slime = new slime(35, 3, 5);
+                            slime.attack();
+                        }
+                        break;
+                    case 2:
+                        if(firstFight){
+                            basilisk = new basilisk(75, 8, 12);
+                            basilisk.attack();
+                        }
+                        break;
+                    case 3:
+                        if(firstFight){
+                            witch = new witch(105, 15, 20);
+                            witch.attack();
+                        }
+                        break;
+                }
+            }
+            firstFight = false;
         }
     }
 }

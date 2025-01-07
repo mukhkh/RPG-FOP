@@ -9,6 +9,8 @@ package rpgfop;
  * @author USER
  */
 import java.util.Random;
+import static rpgfop.game.PlayerCOIN;
+import static rpgfop.game.PlayerHP;
 import static rpgfop.game.mainTextArea;
 import static rpgfop.game.playeratk;
 import static rpgfop.game.playercoin;
@@ -16,247 +18,554 @@ import static rpgfop.game.playerhp;
 
 public class Monster {
     //floor 1
-    public static class goblin{
+    public static class goblin {
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public goblin(int hp,int atk,int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='g';
-            this.drop=drop;
+
+        public goblin(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'g';
+            this.drop = drop;
         }
-        Random chance=new Random();
-        int dodge=chance.nextInt(4);
-        public void attack(){
-            switch(dodge){
-                case 0:
-                    hp=hp-playeratk;
-                    mainTextArea.setText("The goblin lost - HP");
-                    break;
-                case 1:
-                    hp=hp-playeratk;
-                    break;
-                case 2:
-                    hp=hp-playeratk;
-                    break;
+
+        public void attack() {
+            Random chance = new Random();
+            int dodge = chance.nextInt(4);
+            if (isAlive()) {
+                switch (dodge) {
+                    case 0:
+                        hp = hp - playeratk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The goblin lost some HP");
+                        break;
+                    case 1:
+                        hp = hp - playeratk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk
+                                + "The goblin lost some HP");
+                        break;
+                    case 2:
+                        hp = hp - playeratk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk
+                                + "The goblin lost some HP");
+                        break;
+                    case 3:
+                        playerhp = playerhp - atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The goblin dodge and attack you.\n"
+                                        + "you lost some HP");
+                        break;
+
+                }
+            } 
+            //if goblin is dead
+            if(hp<=0) {
+                mainTextArea.setText("The goblin has been defeated and dropped some coins!");
+                playercoin+=drop;
+                game.continueGameScreen();
             }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
+
     }
-    public class slime{
+
+    public static class slime {
+
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public slime(int hp,int atk,int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='s';
-            this.drop=drop;
+
+        public slime(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 's';
+            this.drop = drop;
         }
-        public void attack(){
-            hp=hp-playeratk;
-        }
-        public int getDrop(){
-            return this.drop;
-        }
-        public int getAtk(){
-            return this.atk;
-        }
-    }
-    public static class tarantula{
-        private int hp;
-        private int atk;
-        private char name;
-        private int drop;
-        public tarantula(int hp,int atk,int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='t';
-            this.drop=drop;
-        }
-        Random chance=new Random();
-        int counter=chance.nextInt(4);
-        public void attack(){
-            
-            if(hp >0){
-                if(counter==0){
-                    hp=hp-playeratk;
-                    playerhp-=(int)(playeratk/4);//hp player also decrease
-                    mainTextArea.setText("HP="+hp+"ATK="+atk+"/n"
-                    +"The boss lost "+playeratk +" HP\n"
-                    +"The boss reflect back some damage and you lost some HP"); 
-               }
-                else{
-                    hp=hp-playeratk;
+
+        public void attack() {
+            Random chance = new Random();
+            int counter = chance.nextInt(2);
+            if (isAlive()) {
+                switch (counter) {
+                    case 0:
+                        hp = hp - playeratk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The slime lost some HP");
+                        break;
+                    case 1:
+                        playerhp = playerhp = atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The slime counter your attack \n"
+                                + "you lost some HP");
+                        break;
                 }
-            }else{
-                mainTextArea.setText("you beat the mosnter!");
             }
+            if(hp<=0){
+                mainTextArea.setText("The slime has been defeated and dropped some coins!");
+                playercoin+=drop;
+                game.continueGameScreen();
+            }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return this.drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
+
+    public class tarantula {
+
+        private int hp;
+        private int atk;
+        private char name;
+        private int drop;
+
+        public tarantula(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 't';
+            this.drop = drop;
+        }
+
+        public void attack() {
+            Random chance = new Random();
+            int counter = chance.nextInt(4);
+            if (isAlive()) {
+                if (counter == 0) {
+                    hp = hp - playeratk;
+                    playerhp -= (int) (playeratk / 4);//hp player also decrease
+                    mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                        + "The tarantula lost some HP\n"
+                            + "and you inflicted damage to yourself.Ouch");
+                } else {
+                    hp = hp - playeratk;
+                    mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                        + "The tarantula lost some HP");
+                }
+            } 
+            if(hp<=0){
+                mainTextArea.setText("The tarantula has been defeated and you finish the game!\n"
+                        + "Thank you for playing");
+                playercoin+=drop;
+                game.gameEnd();
+            }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
+        }
+
+        public int getDrop() {
+            return this.drop;
+        }
+
+        public int getAtk() {
+            return this.atk;
+        }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
+    }
+
     //floor 2
-    public class lizard{
+    public static class lizard {
+
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public lizard(int hp, int atk, int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='l';
-            this.drop=drop;
+
+        public lizard(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'l';
+            this.drop = drop;
         }
-        public void attack(){
-            hp=hp-playeratk; //received attack
-            hp=hp+1; //ability (regenerate 1 hp)
-            playerhp -= atk;
+
+        public void attack() {
+            Random chance = new Random();
+            int counter = chance.nextInt(2);
+            if (isAlive()) {
+                switch (counter) {
+                    case 0:
+                        hp = hp - playeratk; //received attack
+                        hp = hp + 1; //ability (regenerate 1 hp)
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The lizard lose some HP, and regenerate 1 HP. \nUnbelievable");
+                        break;
+                    case 1:
+                        playerhp = playerhp - atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The lizard dodge, and you recieve some damage. \n Ouch");
+                        break;
+                }
+            } if(hp<=0){
+                mainTextArea.setText("The slime has been defeated and dropped some coins!");
+                playercoin+=drop;
+                game.continueGameScreen();
+            }
+            //update the display
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return this.drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
-    public class basilisk{
+
+    public static class basilisk {
+
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public basilisk(int hp, int atk,int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='b';
-            this.drop=drop;
+
+        public basilisk(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'b';
+            this.drop = drop;
         }
-        public void attack(){
-            hp=(int)(hp-(0.95*playeratk));//take 5% less dmg
+
+        public void attack() {
+
+            Random chance = new Random();
+            int counter = chance.nextInt(2);
+            if (isAlive()) {
+                switch (counter) {
+                    case 0:
+                        hp = (int) (hp - (0.95 * playeratk));//take 5% less dmg
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The basilsik lost some HP\n"
+                                + "But wait, the number seems different");
+                        break;
+                    case 1:
+                        playerhp = playerhp - atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The basilisk dodge and attack you\n"
+                                + "you lost some HP");
+                        break;
+                }
+            } if(hp<=0){
+                mainTextArea.setText("The basilisk has been defeated and dropped some coins!");
+                playercoin+=drop;
+                game.continueGameScreen();
+            }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return this.drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
-    public class giant{
+
+    public static class giant {
+
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public giant(int hp, int atk, int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='g';
-            this.drop=drop;
+
+        public giant(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'g';
+            this.drop = drop;
         }
-        public void attack(){
-            hp=(int)(hp-(0.85*playeratk));//take 15% less dmg
+
+        public void attack() {
+            Random chance = new Random();
+            int counter = chance.nextInt(3);
+            if (isAlive()) {
+                switch (counter) {
+                    case 0:
+                        hp = (int) (hp - (0.85 * playeratk));//take 15% less dmg
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The giant lost some HP\n"
+                                + "But wait, the number seems different This guy is tough");
+                        break;
+                    case 1:
+                        playerhp = playerhp - atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The giant block you attack and punch back.\n"
+                                + "you lost some HP");
+                        break;
+                    case 2:
+                        playeratk = (int) (playeratk * 0.9);
+                        hp = hp + 3;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The giant let out a loud screech and heal itself \n"
+                                + "Your morale is down, SO IS YOUR ATTACK");
+                }
+            } if(hp<=0){
+                mainTextArea.setText("The giant has been defeated and you finish the game!\n"
+                        + "Thank you for playing");
+                playercoin+=drop;
+                game.gameEnd();
+            }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return this.drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
+
     //floor 3
-    public class zombie{
+    public static class zombie {
+
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public zombie(int hp, int atk, int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='z';
-            this.drop=drop;
+
+        public zombie(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'z';
+            this.drop = drop;
         }
-        public void attack(){
-            hp=hp-playeratk;//loop for the second time plssss
+
+        public void attack() {
+            int lives = 2;
+            do {
+                Random chance = new Random();
+                int counter = chance.nextInt(2);
+                if (isAlive()) {
+                    switch (counter) {
+                        case 0:
+                            hp = hp - playeratk;//loop for the second time plssss
+                            playerhp -= atk;
+                            mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The zombie lost some HP \n"
+                                + "you lost some HP too");
+                            break;
+                        case 1:
+                            hp = hp - playeratk;//loop for the second time plssss
+                            mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The zombie lost some HP and stand still without attacking back \n");
+                            break;
+
+                    }
+                } 
+                if(hp<=0){
+                    lives--;
+                    //revive back
+                    this.hp = 60;
+                    mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                            + "Oh wait. The zombie is still Alive? \n"
+                            + "I mean dead where's ma coin?");
+                }
+            } while (lives != 0);
+            if (lives == 0) {
+                mainTextArea.setText("The zombie finally dead for sure. \n"
+                        + "It dropped some coins for you");
+                playercoin+=drop;
+                game.continueGameScreen();
+            }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public void attack2(){
-            hp=hp-playeratk;
+
+        public void attack2() {
+            hp = hp - playeratk;
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return this.drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
-    public class witch{
+
+    public static class witch {
+
         /*Witches. Known for their prowess in wicked witchcraft and potion making. Also known for their heartlessness and cruelty. When witches encounter enemies, they will throw 
         venomous potions at precision towards their target to inflict damage over time. Though not deadly, this continuous damage will always make their enemies be on low health
         and make them easier to be killed. Besides that, witches can also regenerate health over time by consuming their specially made healing potion. Hence, it is advised for 
         you to advance with caution and plan your strategy thoroughly before taking actions to ensure the most efficient use of your resources.
-        */
+         */
         private int hp;
         private int atk;
         private char name;
         private int drop;
-        public witch(int hp,int atk,int drop){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='w';
-            this.drop=drop;
+
+        public witch(int hp, int atk, int drop) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'w';
+            this.drop = drop;
         }
-        public void attack(){
-            hp=hp-playeratk;
-            hp=hp+2;
+
+        public void attack() {
+            Random chance = new Random();
+            int counter = chance.nextInt(3);
+            if (isAlive()) {
+                switch (counter) {
+                    case 0:
+                        hp = hp - playeratk;
+                        hp = hp + 2;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The witch lost some HP drink a potion \n"
+                                + "She heals herself by 2 HP");
+                        break;
+                    case 1:
+                        playerhp = playerhp - atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The witch throw a rock at you \n"
+                                + "You lost some HP. Rocks hurts");
+                        break;
+                    case 2:
+                        playerhp = playerhp - 10;//poison
+                        hp -= hp - playeratk;
+                        playeratk = playeratk - 10;//poison
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The witch throw a poison at you when you strike her\n"
+                                + "You lost some HP. And ATK too. Ouch!");
+                        break;
+                }
+            } if(hp<=0){
+                mainTextArea.setText("The slime has been defeated and dropped some coins!");
+                playercoin+=drop;
+                game.continueGameScreen();
+            }
+            PlayerHP.setText(""+playerhp);
+            PlayerCOIN.setText(""+playercoin);
         }
-        public int getDrop(){
+
+        public int getDrop() {
             return this.drop;
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
-    public class dragon{
+
+    public class dragon {
+
         /* The Dragon is the mythical creature that has taken over the Kingdom of *******. Its immense strength and powerful abilities has striked fear among even the bravest
         of warriors. Not only the fact that its sheer strength has never been overcome from any battle records, its ability to inflict permanent burning on enemies and its
         steel-thick scaled skin make its enemies struggle even more to defeat it. Hence, it is advised for you to advance with caution and plan your strategy thoroughly before 
         taking actions to ensure the most efficient use of your resources.
-        */
+         */
         private int hp;
         private int atk;
         private char name;
-        public dragon(int hp,int atk){
-            this.hp=hp;
-            this.atk=atk;
-            this.name='d';
+
+        public dragon(int hp, int atk) {
+            this.hp = hp;
+            this.atk = atk;
+            this.name = 'd';
         }
-        Random chance=new Random();
-        int negligible=chance.nextInt(4);
-        public void attack(){
-            if(negligible==0){
-                hp=hp-0;
+
+        public void attack() {
+            Random chance = new Random();
+            int negligible = chance.nextInt(4);
+            if (isAlive()) {
+                switch (negligible) {
+                    case 0:
+                        hp = hp - 0;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                            + "Your attack did nothing \n"
+                            + "Oh no man");
+                        break;
+                    case 1:
+                        hp = (int) (hp - (0.75 * playeratk));
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                            + "You strike the dragon on its head \n"
+                            + "It lost some HP.");
+                        break;
+                    case 2:
+                        playerhp = playerhp - 5;//burning
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                            + "The dragon use flamethrower \n"
+                            + "You cannot appraoch it and lost some HP");
+                        break;
+                    case 3:
+                        playerhp = playerhp - 10;//burning
+                        hp = (int) (hp - (0.75 * playeratk));
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                            + "The dragon use flamethrower \n"
+                            + "You appraoch it even thou it hurts\n"
+                                + "You manage to deal some damage");
+                        break;
+                }
+            } if(hp<=0){
+                mainTextArea.setText("The dragon has been defeated and you finish the game!\n"
+                        + "Thank you for playing");
+                game.gameEnd();
             }
-            else{
-                hp=(int)(hp-(0.75*playeratk));
-            }
+            PlayerHP.setText(""+playerhp);
         }
-        public int getAtk(){
+
+        public int getAtk() {
             return this.atk;
         }
-    }
-    
-    public void encounter(){
-        int floor =1;
-        
+
+        public boolean isAlive() {
+            return hp > 0;
+        }
     }
 }
