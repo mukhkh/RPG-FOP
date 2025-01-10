@@ -69,18 +69,20 @@ public class Merchant {
                 System.out.println("You buy " + Merchant.items[0]);
                 playercoin -= Merchant.prices[0];
                 playerhp += HP;
-                System.out.println("Your balances : " + coins + " coins");
+                System.out.println("Your balances : " + playercoin + " coins");
                 //inventory array ++;
                 //update inventory
                 break;
             case 2 :
-                if(coins < Merchant.prices[1]){
+                if(playercoin < Merchant.prices[1]){
+                    mainTextArea.setText("Insufficient coins!\n"
+                            + "You were kicked by the merchant");
                     System.out.println("Insufficient coins!");
                     break;
                 }
-                
+                mainTextArea.setText("You buy " + Merchant.items[1]);
                 System.out.println("You buy " + Merchant.items[1]);
-                coins -= Merchant.prices[1];
+                playercoin -= Merchant.prices[1];
                 System.out.println("Your balances : " + coins + " coins");
                 playeratk += Attack;
                 break;
@@ -95,15 +97,15 @@ public class Merchant {
         switch(floor){
             case 1 :
                 HP = 15; HP_price = 10;
-                Attack = 20; Attack_price = 15;
+                Attack = 10; Attack_price = 15;
                 break;
             case 2 :
                 HP = 25; HP_price = 15;
-                Attack = 40; Attack_price = 30;
+                Attack = 15; Attack_price = 20;
                 break;
             default :
-                HP = 50; HP_price = 25;
-                Attack = 70; Attack_price = 50;
+                HP = 50; HP_price = 20;
+                Attack = 20; Attack_price = 30;
                 break;                
         }
     }

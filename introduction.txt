@@ -1,1 +1,9 @@
-You are someone who spends 8 hours a day in front of your computer. One day, a storm struck your town that made almost all electronics stop working, so you spent your day away from your computer. 5 hours after the incident, your computer started working again. However, what you thought was working, was only superficial. 
+You are someone who spends 8 hours a day
+in front of your computer. One day, a 
+storm struck your town that made almost 
+all electronics stop working, so you 
+spent your day away from your computer.
+5 hours after the incident, your computer
+started working again. However, what 
+you thought was working, was only 
+superficial. 

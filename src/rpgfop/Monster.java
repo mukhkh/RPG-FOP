@@ -9,6 +9,7 @@ package rpgfop;
  * @author USER
  */
 import java.util.Random;
+import static rpgfop.game.PlayerATK;
 import static rpgfop.game.PlayerCOIN;
 import static rpgfop.game.PlayerHP;
 import static rpgfop.game.mainTextArea;
@@ -43,12 +44,12 @@ public class Monster {
                         break;
                     case 1:
                         hp = hp - playeratk;
-                        mainTextArea.setText("HP:"+hp+"ATK:"+atk
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                                 + "The goblin lost some HP");
                         break;
                     case 2:
                         hp = hp - playeratk;
-                        mainTextArea.setText("HP:"+hp+"ATK:"+atk
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                                 + "The goblin lost some HP");
                         break;
                     case 3:
@@ -57,8 +58,8 @@ public class Monster {
                                 + "The goblin dodge and attack you.\n"
                                         + "you lost some HP");
                         break;
-
                 }
+                HeroDeadOrNot();
             } 
             //if goblin is dead
             if(hp<=0) {
@@ -109,12 +110,14 @@ public class Monster {
                                 + "The slime lost some HP");
                         break;
                     case 1:
-                        playerhp = playerhp = atk;
+                        playerhp = playerhp - atk;
+                        hp = hp - playeratk;
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
-                                + "The slime counter your attack \n"
+                                + "The slime recieve damage and counter your attack \n"
                                 + "you lost some HP");
                         break;
                 }
+                HeroDeadOrNot();
             }
             if(hp<=0){
                 mainTextArea.setText("The slime has been defeated and dropped some coins!");
@@ -138,7 +141,7 @@ public class Monster {
         }
     }
 
-    public class tarantula {
+    public static class tarantula {
 
         private int hp;
         private int atk;
@@ -168,6 +171,7 @@ public class Monster {
                                         + "The tarantula lost some HP");
                 }
             } 
+            HeroDeadOrNot();
             if(hp<=0){
                 mainTextArea.setText("The tarantula has been defeated and you finish the game!\n"
                         + "Thank you for playing");
@@ -198,7 +202,7 @@ public class Monster {
         private int atk;
         private char name;
         private int drop;
-
+        //(55, 6, 9)
         public lizard(int hp, int atk, int drop) {
             this.hp = hp;
             this.atk = atk;
@@ -208,7 +212,7 @@ public class Monster {
 
         public void attack() {
             Random chance = new Random();
-            int counter = chance.nextInt(2);
+            int counter = chance.nextInt(3);
             if (isAlive()) {
                 switch (counter) {
                     case 0:
@@ -220,11 +224,18 @@ public class Monster {
                     case 1:
                         playerhp = playerhp - atk;
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
-                                + "The lizard dodge, and you recieve some damage. \n Ouch");
+                                + "The lizard dodge, and you recieve some damage. \nOuch");
+                        break;
+                    case 2:
+                        hp = hp - playeratk; //received attack
+                        hp = hp + 1; //ability (regenerate 1 hp)
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The lizard lose some HP, and regenerate 1 HP. \nUnbelievable");
                         break;
                 }
+                HeroDeadOrNot();
             } if(hp<=0){
-                mainTextArea.setText("The slime has been defeated and dropped some coins!");
+                mainTextArea.setText("The lizard has been defeated and dropped some coins!");
                 playercoin+=drop;
                 game.continueGameScreen();
             }
@@ -252,7 +263,7 @@ public class Monster {
         private int atk;
         private char name;
         private int drop;
-
+        //(75, 8, 12)
         public basilisk(int hp, int atk, int drop) {
             this.hp = hp;
             this.atk = atk;
@@ -263,14 +274,14 @@ public class Monster {
         public void attack() {
 
             Random chance = new Random();
-            int counter = chance.nextInt(2);
+            int counter = chance.nextInt(3);
             if (isAlive()) {
                 switch (counter) {
                     case 0:
                         hp = (int) (hp - (0.95 * playeratk));//take 5% less dmg
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
-                                + "The basilsik lost some HP\n"
-                                + "But wait, the number seems different");
+                                + "The basilsik lost some HP. But its skin is tough,\n"
+                                + "you deal less damage than you supposed to do");
                         break;
                     case 1:
                         playerhp = playerhp - atk;
@@ -278,7 +289,14 @@ public class Monster {
                                 + "The basilisk dodge and attack you\n"
                                 + "you lost some HP");
                         break;
+                    case 2:
+                        hp = (int) (hp - (0.95 * playeratk));//take 5% less dmg
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The basilsik lost some HP. But its hard skin is tough,\n"
+                                + "you deal less damage than you supposed to do");
+                        break;
                 }
+                HeroDeadOrNot();
             } if(hp<=0){
                 mainTextArea.setText("The basilisk has been defeated and dropped some coins!");
                 playercoin+=drop;
@@ -317,14 +335,14 @@ public class Monster {
 
         public void attack() {
             Random chance = new Random();
-            int counter = chance.nextInt(3);
+            int counter = chance.nextInt(4);
             if (isAlive()) {
                 switch (counter) {
                     case 0:
                         hp = (int) (hp - (0.85 * playeratk));//take 15% less dmg
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
-                                + "The giant lost some HP\n"
-                                + "But wait, the number seems different This guy is tough");
+                                + "The giant lost some HP. This guy is tough\n"
+                                + "you deal less damage than you supposed to do");
                         break;
                     case 1:
                         playerhp = playerhp - atk;
@@ -338,7 +356,14 @@ public class Monster {
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                                 + "The giant let out a loud screech and heal itself \n"
                                 + "Your morale is down, SO IS YOUR ATTACK");
+                    case 4:
+                        hp = (int) (hp - (0.85 * playeratk));//take 15% less dmg
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The giant lost some HP. This guy is tough\n"
+                                + "you deal less damage than you supposed to do");
+                        break;
                 }
+                HeroDeadOrNot();
             } if(hp<=0){
                 mainTextArea.setText("The giant has been defeated and you finish the game!\n"
                         + "Thank you for playing");
@@ -369,19 +394,21 @@ public class Monster {
         private int atk;
         private char name;
         private int drop;
-
+        private int lives;
+        //(60, 9, 5);
         public zombie(int hp, int atk, int drop) {
             this.hp = hp;
             this.atk = atk;
             this.name = 'z';
             this.drop = drop;
+            lives = 2;
         }
 
         public void attack() {
-            int lives = 2;
-            do {
+            
+            
                 Random chance = new Random();
-                int counter = chance.nextInt(2);
+                int counter = chance.nextInt(3);
                 if (isAlive()) {
                     switch (counter) {
                         case 0:
@@ -394,25 +421,37 @@ public class Monster {
                         case 1:
                             hp = hp - playeratk;//loop for the second time plssss
                             mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
-                                + "The zombie lost some HP and stand still without attacking back \n");
+                                + "The zombie lost some HP and stand still without\n"
+                                    + "attacking back \n");
+                            break;
+                        case 2:
+                            hp = hp - playeratk;//loop for the second time plssss
+                            mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                + "The zombie lost some HP and stand still without\n"
+                                    + "attacking back \n");
                             break;
 
+
                     }
+                    HeroDeadOrNot();
                 } 
                 if(hp<=0){
+                    
                     lives--;
                     //revive back
                     this.hp = 60;
                     mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                             + "Oh wait. The zombie is still Alive? \n"
                             + "I mean dead where's ma coin?");
+                    HeroDeadOrNot();
                 }
-            } while (lives != 0);
+                
             if (lives == 0) {
                 mainTextArea.setText("The zombie finally dead for sure. \n"
                         + "It dropped some coins for you");
                 playercoin+=drop;
                 game.continueGameScreen();
+                        HeroDeadOrNot();
             }
             PlayerHP.setText(""+playerhp);
             PlayerCOIN.setText(""+playercoin);
@@ -446,7 +485,7 @@ public class Monster {
         private int atk;
         private char name;
         private int drop;
-
+        //(105, 15, 20)
         public witch(int hp, int atk, int drop) {
             this.hp = hp;
             this.atk = atk;
@@ -474,19 +513,24 @@ public class Monster {
                         break;
                     case 2:
                         playerhp = playerhp - 10;//poison
-                        hp -= hp - playeratk;
+                        hp = hp - playeratk;
                         playeratk = playeratk - 10;//poison
+                        if(playerhp<5){
+                            playerhp=5;
+                        }
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                                 + "The witch throw a poison at you when you strike her\n"
                                 + "You lost some HP. And ATK too. Ouch!");
                         break;
                 }
+                HeroDeadOrNot();
             } if(hp<=0){
-                mainTextArea.setText("The slime has been defeated and dropped some coins!");
+                mainTextArea.setText("The witch has been defeated and dropped some coins!");
                 playercoin+=drop;
                 game.continueGameScreen();
             }
             PlayerHP.setText(""+playerhp);
+            PlayerATK.setText(""+playeratk);
             PlayerCOIN.setText(""+playercoin);
         }
 
@@ -503,7 +547,7 @@ public class Monster {
         }
     }
 
-    public class dragon {
+    public static class dragon {
 
         /* The Dragon is the mythical creature that has taken over the Kingdom of *******. Its immense strength and powerful abilities has striked fear among even the bravest
         of warriors. Not only the fact that its sheer strength has never been overcome from any battle records, its ability to inflict permanent burning on enemies and its
@@ -513,7 +557,7 @@ public class Monster {
         private int hp;
         private int atk;
         private char name;
-
+        //(275, 70)
         public dragon(int hp, int atk) {
             this.hp = hp;
             this.atk = atk;
@@ -522,7 +566,7 @@ public class Monster {
 
         public void attack() {
             Random chance = new Random();
-            int negligible = chance.nextInt(4);
+            int negligible = chance.nextInt(5);
             if (isAlive()) {
                 switch (negligible) {
                     case 0:
@@ -551,8 +595,14 @@ public class Monster {
                             + "You appraoch it even thou it hurts\n"
                                 + "You manage to deal some damage");
                         break;
+                    case 4:
+                        playerhp -= atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                            + "The dragon use his claw to beat you \n"
+                            + "oh ma gad the damage!");
                 }
-            } if(hp<=0){
+                HeroDeadOrNot();
+            } if(hp<=0){ // this hp is hp of a dragon inside dragon class
                 mainTextArea.setText("The dragon has been defeated and you finish the game!\n"
                         + "Thank you for playing");
                 game.gameEnd();
@@ -566,6 +616,15 @@ public class Monster {
 
         public boolean isAlive() {
             return hp > 0;
+        }
+    }
+    
+    public static void HeroDeadOrNot(){
+        if(playerhp <= 0){
+            //player lose
+            mainTextArea.setText("You're dead. Thank you for playing the game.\n"
+                    + "Nice try Hero");
+            game.gameEnd();
         }
     }
 }

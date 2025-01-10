@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.JTextField; //for input username
 import static rpgfop.Inv.displayInventory;
 import static rpgfop.Inv.findItem;
 import static rpgfop.Merchant.Buy_Process;
@@ -56,10 +56,7 @@ public class game {
     static JTextField input;
     static JButton choice1, choice2, choice3, choice4, choice5;
     
-    JPanel inventoryitem;
-    JButton item1, item2, item3, item4, item5, item6, item7, item8, item9, item10;
-    JButton backFromInventory;
-    
+    //button function connecter
     chooseDifficultyHandler cdHandler  = new chooseDifficultyHandler(); 
     titleScreenHandler1 ts1Handler = new titleScreenHandler1();
     titleScreenHandler2 ts2Handler = new titleScreenHandler2();
@@ -75,7 +72,7 @@ public class game {
     static buy1 buy1Handler = new buy1();
     static buy2 buy2Handler = new buy2();
     static fightMon fightMonHandler = new fightMon();
-    fightBoss fbHandler = new fightBoss();
+    static fightBoss fbHandler = new fightBoss();
     
     //object for action listener
     static toNorth NmoveHandler = new toNorth();
@@ -84,6 +81,7 @@ public class game {
     static toSouth SmoveHandler = new toSouth();
     static toInventory tiHandler = new toInventory();
     
+    //object of mosnter class
     static goblin goblin;
     static slime slime;
     static tarantula tarantula;
@@ -97,8 +95,12 @@ public class game {
     static int move = 0;
     static int fightwho;
     static boolean firstFight;
+    
+    
     static String PlayerName;
-    static int playerhp, playeratk, playercoin, floor, opt;
+    static int playerhp, playeratk, playercoin; 
+            
+    static int floor,opt;
     
     public static void main(String[] args) {
          new game();
@@ -296,44 +298,50 @@ public class game {
         nextButtonStory.setVisible(false); //diasble next button panel
         
         maintextPanel = new JPanel();
-        maintextPanel.setBounds(50, 100, 450, 400);
+        maintextPanel.setBounds(50, 100, 500, 400);
         maintextPanel.setBackground(Color.white);
+        maintextPanel.setForeground(Color.black);
         
-        mainTextArea = new JTextArea("Welcome to the dungeon, warrior. "
-                + "Here, the dungeon will generate eveything themself and there is no other "
-                + "choices than to defeat the boss of this floor to exit");
-        mainTextArea.setBounds(50, 100, 450, 100);
-        mainTextArea.setBackground(Color.gray);
+        mainTextArea = new JTextArea();
+        mainTextArea.setBounds(50, 100, 500, 400);
+        mainTextArea.setBackground(Color.white);
         mainTextArea.setForeground(Color.black);
         mainTextArea.setFont(storyFont);
         mainTextArea.setLineWrap(true); //if text too long, it will break line
+        mainTextArea.setText("Welcome to the dungeon, warrior.\n"
+                + "Here, the dungeon will generate eveything and there\nis no other "
+                + "choices than to defeat the boss of this \nfloor to exit");
         mainTextArea.setVisible(true);
         maintextPanel.add(mainTextArea);
         
         choicePanel = new JPanel();
         choicePanel.setBounds(200, 300, 200, 150);
-        choicePanel.setBackground(Color.red);
+        choicePanel.setBackground(Color.white);
         choicePanel.setForeground(Color.black);
         choicePanel.setLayout(new GridLayout(5,1));
         
+        //button to move North
         choice1 = new JButton("NORTH");
         choice1.setBackground(Color.white);
         choice1.setForeground(Color.black);
         choice1.setFocusPainted(false);
         choice1.addActionListener(NmoveHandler);
         
+        //button to move East
         choice2 = new JButton("EAST");
         choice2.setBackground(Color.white);
         choice2.setForeground(Color.black);
         choice2.setFocusPainted(false);
         choice2.addActionListener(EmoveHandler);
         
+        //button to move West
         choice3 = new JButton("WEST");
         choice3.setBackground(Color.white);
         choice3.setForeground(Color.black);
         choice3.setFocusPainted(false);
         choice3.addActionListener(WmoveHandler);
         
+        //button to move South
         choice4 = new JButton("SOUTH");
         choice4.setBackground(Color.white);
         choice4.setForeground(Color.black);
@@ -384,20 +392,12 @@ public class game {
         PlayerCOIN.setForeground(Color.black);
         PlayerCOIN.setFont(normalFont);
         playerstats.add(PlayerCOIN);
-        
-        monstatpanel = new JPanel();
-        monstatpanel.setBounds(50, 15, 500, 50);
-        monstatpanel.setBackground(Color.WHITE);
-        monstatpanel.setForeground(Color.WHITE);
-        monstatpanel.setLayout(new GridLayout(1, 4));
-        
+                
         createPlayer();
         
         con.add(playerstats);
         con.add(maintextPanel); //put text area on the screen
         con.add(choicePanel);
-        
-        
     }
     public static void continueGameScreen(){
         choice1.setText("NORTH");
@@ -429,6 +429,8 @@ public class game {
     }
     
     public static void gameEnd(){
+        System.out.println("Name : "+PlayerName);
+        System.out.println("Move used : "+move);
         choice1.setText("");
         for( ActionListener al : choice1.getActionListeners() ) {
         choice1.removeActionListener( al );
@@ -455,15 +457,17 @@ public class game {
         choice5.setText("");
     }
     public static void createPlayer(){
+        //PlayerName get from user input (GUI)
         System.out.println("Player name: "+PlayerName);
+        //these variable is static variable
         playerhp = 50;
         playeratk = 5;
         playercoin = 10;
         
+        //display stats on GUI
         PlayerHP.setText(""+playerhp);
         PlayerATK.setText(""+playeratk);
         PlayerCOIN.setText(""+playercoin);
-        
     }
     
     public void fightButton(){
@@ -566,6 +570,7 @@ public class game {
         @Override
         public void actionPerformed(ActionEvent event){
             move++;
+            firstFight = true;
             switch(floor){
                     case 1:
                         mainTextArea.setText("You found a boss tarantula, fight or flight?");
@@ -585,7 +590,7 @@ public class game {
             choice2.removeActionListener(EmoveHandler);
             choice3.removeActionListener(WmoveHandler);
             choice4.removeActionListener(SmoveHandler);
-            choice1.addActionListener(fightMonHandler);
+            choice1.addActionListener(fbHandler);
             choice2.addActionListener(backHandler);
         }
     }
@@ -669,7 +674,7 @@ public class game {
             choice3.setText("");
             choice4.setText("");
             choice1.removeActionListener(buyHandler);
-            choice2.removeActionListener(EmoveHandler);
+            choice2.removeActionListener(backHandler);
             choice1.addActionListener(buy1Handler);
             choice2.addActionListener(buy2Handler);
              
@@ -701,17 +706,30 @@ public class game {
             continueGameScreen();
         }
     }
-    public class fightBoss implements ActionListener{
+    public static class fightBoss implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
             switch(floor){
                 case 1:
+                    if(firstFight){
+                            tarantula = new tarantula(75, 9, 15);
+                        }
+                        tarantula.attack();
                     break;
                 case 2:
+                    if(firstFight){
+                            giant = new giant(160, 18, 50);
+                        }
+                        giant.attack();
                     break;
                 case 3:
+                    if(firstFight){
+                            dragon = new dragon(275, 70);
+                        }
+                        dragon.attack();
                     break;
             }
+            firstFight=false;
         }
     }
     public static class fightMon implements ActionListener{
@@ -734,9 +752,9 @@ public class game {
                         break;
                     case 3:
                         if(firstFight){
-                            zombie = new zombie(60, 9, 5);
-                            zombie.attack();
+                            zombie = new zombie(60, 9, 10);
                         }
+                        zombie.attack();
                         break;
                 }
             }else{
@@ -744,20 +762,20 @@ public class game {
                     case 1:
                         if(firstFight){
                             slime = new slime(35, 3, 5);
-                            slime.attack();
                         }
+                        slime.attack();
                         break;
                     case 2:
                         if(firstFight){
                             basilisk = new basilisk(75, 8, 12);
-                            basilisk.attack();
                         }
+                        basilisk.attack();
                         break;
                     case 3:
                         if(firstFight){
                             witch = new witch(105, 15, 20);
-                            witch.attack();
                         }
+                        witch.attack();
                         break;
                 }
             }
