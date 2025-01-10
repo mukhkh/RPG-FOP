@@ -157,18 +157,24 @@ public class Monster {
 
         public void attack() {
             Random chance = new Random();
-            int counter = chance.nextInt(4);
+            int counter = chance.nextInt(3);
             if (isAlive()) {
-                if (counter == 0) {
-                    hp = hp - playeratk;
-                    playerhp -= (int) (playeratk / 4);//hp player also decrease
-                    mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                switch (counter) {
+                    case 0:
+                        hp = hp - playeratk;
+                        playerhp -= (int) (playeratk / 4);//hp player also decrease
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                                         + "The tarantula lost some HP\n"
-                            + "and you inflicted damage to yourself.Ouch");
-                } else {
-                    hp = hp - playeratk;
-                    mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
-                                        + "The tarantula lost some HP");
+                            + "and you inflicted damage to yourself. Ouch!");
+                    case 1:
+                        hp = hp - playeratk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                            + "The tarantula lost some HP");
+                    case 2:
+                        playerhp -= atk;
+                        mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
+                                            + "The tarantula dodge your attack\n"
+                                + "It fight back and you lost some HP");
                 }
             } 
             HeroDeadOrNot();
