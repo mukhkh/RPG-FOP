@@ -42,22 +42,23 @@ public class game {
     JFrame menu;
     Container con; //function to add button, title etc
     JPanel titlenamepanel, startbuttonpanel, maintextPanel ,choicePanel, difficulty;
-    JPanel playerstats, monstatpanel;
+    JPanel playerstats, leaderBoardPanel, returnPanel;
     JPanel storyPanel, nextStoryButtonPanel;
-    JTextArea storyboard;
+    JTextArea storyboard, leaderBoardArea;
     static JTextArea mainTextArea;
     JPanel usernameButton ,inputUsername, instruction;
     static JLabel titlename, HPPlayerDisplay, ATKPlayerDisplay, PlayerHP, PlayerATK, COINPlayerDisplay, PlayerCOIN, MANAPlayerDisplay, PlayerMANA;
     Font Titlefont = new Font("Algerian ", Font.PLAIN, 45);
     Font normalFont = new Font("Arabic Typesetting", Font.PLAIN, 25);
     Font storyFont = new Font("Monospaced", Font.PLAIN, 15);
-    JButton startButton, nextButtonStory;
+    JButton startButton, nextButtonStory ,R;
     JButton level1,level2,level3;
     static JTextField input;
     static JButton choice1, choice2, choice3, choice4, choice5;
     
     //button function connecter
     chooseDifficultyHandler cdHandler  = new chooseDifficultyHandler(); 
+    titleScreenHandler tsHandler = new titleScreenHandler();
     titleScreenHandler1 ts1Handler = new titleScreenHandler1();
     titleScreenHandler2 ts2Handler = new titleScreenHandler2();
     titleScreenHandler3 ts3Handler = new titleScreenHandler3();
@@ -470,6 +471,45 @@ public class game {
         PlayerCOIN.setText(""+playercoin);
     }
     
+    public void displayLeaderboard(){
+        
+        instruction.setVisible(false);
+        inputUsername.setVisible(false);
+        usernameButton.setVisible(false);
+        
+        leaderBoardPanel = new JPanel();
+        leaderBoardPanel.setBounds(50, 100, 500, 400);
+        leaderBoardPanel.setBackground(Color.white);
+        leaderBoardPanel.setForeground(Color.black);
+        
+        leaderBoardArea= new JTextArea();
+        leaderBoardArea.setBounds(50, 100, 500, 400);
+        leaderBoardArea.setBackground(Color.white);
+        leaderBoardArea.setForeground(Color.black);
+        leaderBoardArea.setFont(storyFont);
+        leaderBoardArea.setLineWrap(true); //if text too long, it will break line
+        leaderBoardArea.setText("gay"); //String for leaderboard is here
+        leaderBoardArea.setVisible(true);
+        leaderBoardPanel.add(leaderBoardArea);
+        
+        returnPanel = new JPanel();
+        returnPanel.setBounds(200, 300, 200, 150);
+        returnPanel.setBackground(Color.white);
+        returnPanel.setForeground(Color.black);
+        returnPanel.setLayout(new GridLayout(5,1));
+        
+        //button to return
+        R = new JButton("RETURN");
+        R.setBackground(Color.white);
+        R.setForeground(Color.black);
+        R.setFocusPainted(false);
+        R.addActionListener(tsHandler);
+        
+        returnPanel.add(R);
+        con.add(leaderBoardPanel);
+        con.add(returnPanel);        
+    }
+    
     public void fightButton(){
         choice1.setText("FIGHT");
         choice1.removeActionListener(NmoveHandler);
@@ -513,6 +553,14 @@ public class game {
             enterUsernameScreen();
         }
     }
+    public class titleScreenHandler implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent event){
+            leaderBoardPanel.setVisible(false);
+            returnPanel.setVisible(false);
+            enterUsernameScreen();
+        }
+    }
     public class usernameScreenHandler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event){
@@ -523,6 +571,7 @@ public class game {
     public class leaderboardHandler implements ActionListener{        
         @Override
         public void actionPerformed(ActionEvent event){
+            displayLeaderboard();
             //open leaderboard from database function
         }
     }
