@@ -64,14 +64,22 @@ public class game {
     titleScreenHandler3 ts3Handler = new titleScreenHandler3();
     usernameScreenHandler usHandler = new usernameScreenHandler();
     leaderboardHandler ldHandler = new leaderboardHandler();
+    
+    //hadnler for story and create a game panel when story end
     sambungstory ssHandler = new sambungstory();
     sambungstory2 ss2Handler = new sambungstory2();
     sambungstory3 ss3Handler = new sambungstory3();
     createGame cgHandler = new createGame();
+    
+    //useful handler for returning back whenever needed
     static back backHandler = new back();
+    
+    //handler for merchant
     static buy buyHandler = new buy();
     static buy1 buy1Handler = new buy1();
     static buy2 buy2Handler = new buy2();
+    
+    //handler for fighting monster and bosses
     static fightMon fightMonHandler = new fightMon();
     static fightBoss fbHandler = new fightBoss();
     
@@ -93,15 +101,15 @@ public class game {
     static witch witch;
     static dragon dragon;
     
+    //variable for gameplay
     static int move = 0;
+    static int floor,opt;
     static int fightwho;
     static boolean firstFight;
     
-    
+    //player variable
     static String PlayerName;
     static int playerhp, playeratk, playercoin; 
-            
-    static int floor,opt;
     
     public static void main(String[] args) {
          new game();
@@ -483,12 +491,12 @@ public class game {
         leaderBoardPanel.setForeground(Color.black);
         
         leaderBoardArea= new JTextArea();
-        leaderBoardArea.setBounds(50, 100, 500, 400);
+        leaderBoardArea.setBounds(250, 200, 500, 400);
         leaderBoardArea.setBackground(Color.white);
         leaderBoardArea.setForeground(Color.black);
         leaderBoardArea.setFont(storyFont);
         leaderBoardArea.setLineWrap(true); //if text too long, it will break line
-        leaderBoardArea.setText("gay"); //String for leaderboard is here
+        leaderBoardArea.setText("nothing to see here"); //String for leaderboard is here
         leaderBoardArea.setVisible(true);
         leaderBoardPanel.add(leaderBoardArea);
         
