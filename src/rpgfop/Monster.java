@@ -521,8 +521,8 @@ public class Monster {
                         playerhp = playerhp - 10;//poison
                         hp = hp - playeratk;
                         playeratk = playeratk - 10;//poison
-                        if(playerhp<5){
-                            playerhp=5;
+                        if(playeratk<5){
+                            playeratk=5;
                         }
                         mainTextArea.setText("HP:"+hp+"ATK:"+atk+"\n"
                                 + "The witch throw a poison at you when you strike her\n"
