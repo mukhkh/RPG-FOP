@@ -630,6 +630,7 @@ public class Monster {
             //player lose
             mainTextArea.setText("You're dead. Thank you for playing the game.\n"
                     + "Nice try Hero");
+            playerhp = 0;
             game.gameEnd();
         }
     }

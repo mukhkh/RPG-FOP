@@ -438,6 +438,10 @@ public class game {
     }
     
     public static void gameEnd(){
+        
+        PlayerHP.setText(""+playerhp);
+        PlayerATK.setText(""+playeratk);
+        PlayerCOIN.setText(""+playercoin);
         System.out.println("Name : "+PlayerName);
         System.out.println("Move used : "+move);
         choice1.setText("");
